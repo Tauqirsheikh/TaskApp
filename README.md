@@ -13,9 +13,6 @@ password `Abcd@1234`
 **library for Location/Map**
 `react-native-maps`
 
-**google API key for geo location**
-`AIzaSyBeDg8ysbsYSRodBSbBhgQKevvX6bBTd1U`
-
 **For Geo Location**
 `@react-native-community/geolocation`
 
