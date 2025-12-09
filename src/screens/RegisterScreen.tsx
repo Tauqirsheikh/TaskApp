@@ -6,7 +6,6 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const { height } = Dimensions.get("window");
 
-// Navigation Type
 type RootStackParamList = {
   Login: undefined;
   Register: undefined;
