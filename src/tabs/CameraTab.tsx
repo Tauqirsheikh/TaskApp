@@ -4,73 +4,124 @@ import { Camera, CameraType } from "react-native-camera-kit";
 
 const CameraTab: React.FC = () => {
     const cameraRef = useRef<any>(null);
+    const [isCameraOpen, setIsCameraOpen] = useState(false);
     const [imageUri, setImageUri] = useState<string | null>(null);
 
     const takePhoto = async () => {
         if (!cameraRef.current) return;
+
         try {
             const photo = await cameraRef.current.capture();
-            setImageUri(photo.uri);
-            console.log("📸 Photo captured:", photo.uri);
-        } catch (error) {
-            console.warn("Photo capture error:", error);
+            console.log("Photo Object:", photo);
+
+            const uri =
+                photo?.uri ||
+                photo?.image ||
+                photo?.imageUri ||
+                photo?.path ||
+                null;
+
+            if (!uri) {
+                console.warn("No valid image URI found");
+                return;
+            }
+
+            setImageUri(uri.startsWith("file://") ? uri : `file://${uri}`);
+            setIsCameraOpen(false);
+        } catch (err) {
+            console.log("Capture Error:", err);
         }
     };
 
+
+    // const closeCamera = () => {
+    //     setIsCameraOpen(false);
+    //     setImageUri(null);
+    // };
+
     return (
-        <View style={{ flex: 1 }}>
-            {imageUri ? (
-                <Image source={{ uri: imageUri }} style={StyleSheet.absoluteFill} />
-            ) : (
-                <Camera
-                    ref={cameraRef}
-                    style={StyleSheet.absoluteFill}
-                    cameraType={CameraType.Back}
-                    flashMode="auto"
-                    focusMode="on"
-                    zoomMode="on"
-                />
+        <View style={{ flex: 1, padding: 20 }}>
+
+            {!isCameraOpen && (
+                <View style={styles.previewBox}>
+                    {imageUri ? (
+                        <Image
+                            source={{ uri: imageUri }}
+                            style={styles.previewImage}
+                            resizeMode="cover"
+                        />
+                    ) : (
+                        <Text style={{ fontSize: 16, color: "#555" }}>
+                            No image captured
+                        </Text>
+                    )}
+                </View>
             )}
 
-            <View style={styles.controls}>
-                {!imageUri && (
-                    <TouchableOpacity style={styles.button} onPress={takePhoto}>
-                        <Text style={styles.buttonText}>Take Photo</Text>
-                    </TouchableOpacity>
-                )}
+            {!isCameraOpen && (
+                <TouchableOpacity
+                    style={styles.cameraBtn}
+                    onPress={() => setIsCameraOpen(true)}
+                >
+                    <Text style={styles.btnText}>Open Camera</Text>
+                </TouchableOpacity>
+            )}
 
-                {imageUri && (
-                    <TouchableOpacity
-                        style={[styles.button, { backgroundColor: "#555" }]}
-                        onPress={() => setImageUri(null)}
-                    >
-                        <Text style={styles.buttonText}>Retake</Text>
+            {isCameraOpen && (
+                <View style={{ flex: 1 }}>
+                    <Camera
+                        ref={cameraRef}
+                        style={StyleSheet.absoluteFill}
+                        cameraType={CameraType.Back}
+                    />
+
+                    <TouchableOpacity style={styles.captureBtn} onPress={takePhoto}>
+                        <Text style={styles.btnText}>Capture</Text>
                     </TouchableOpacity>
-                )}
-            </View>
+                </View>
+            )}
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    controls: {
-        position: "absolute",
+    previewBox: {
+        height: 300,
         width: "100%",
-        bottom: 40,
-        flexDirection: "row",
-        justifyContent: "space-evenly",
+        borderRadius: 12,
+        backgroundColor: "#eee",
+        justifyContent: "center",
+        alignItems: "center",
+        overflow: "hidden",
+        marginBottom: 20,
     },
-    button: {
-        backgroundColor: "#007AFF",
-        paddingHorizontal: 22,
+    previewImage: {
+        width: "100%",
+        height: "100%",
+    },
+    cameraBtn: {
+        backgroundColor: "#00A86B",
+        paddingHorizontal: 20,
         paddingVertical: 12,
-        borderRadius: 25,
+        borderRadius: 8,
+        alignSelf: "center",
+        marginTop: 10,
     },
-    buttonText: {
-        color: "#fff",
-        fontSize: 16,
+    captureBtn: {
+        position: "absolute",
+        bottom: 40,
+        alignSelf: "center",
+        backgroundColor: "#00A86B",
+        paddingHorizontal: 25,
+        paddingVertical: 12,
+        borderRadius: 40,
+    },
+    btnText: {
+        color: "white",
         fontWeight: "bold",
+        fontSize: 16,
     },
 });
 
 export default CameraTab;
+

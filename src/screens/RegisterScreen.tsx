@@ -38,7 +38,7 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
       <CustomButton
         title="SIGN UP"
         bgColor="#fff"
-        textColor="#FF6600"
+        textColor="#00A86B"
         onPress={() => { }}
       />
 
@@ -55,7 +55,7 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FF6600",
+    backgroundColor: "#00A86B",
     alignItems: "center",
     paddingTop: height * 0.10,
     justifyContent: 'center'

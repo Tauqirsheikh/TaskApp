@@ -64,7 +64,7 @@ export default function LoginScreen({ navigation }: Props) {
       <CustomButton
         title="SIGN IN"
         bgColor="#fff"
-        textColor="#FF6600"
+        textColor="#00A86B"
         onPress={handleLogin}
       />
 
@@ -84,7 +84,7 @@ export default function LoginScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FF6600",
+    backgroundColor: "#00A86B",
     alignItems: "center",
     paddingTop: height * 0.1,
     justifyContent: 'center'
