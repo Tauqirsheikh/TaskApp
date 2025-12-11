@@ -31,7 +31,7 @@ export default function HomeScreen({ navigation }: any) {
 
     return (
         <View style={styles.container}>
-            {/* HEADER */}
+            
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>
                     {activeTab}

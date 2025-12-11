@@ -6,57 +6,85 @@ import {
     View,
     TouchableOpacity,
     StyleSheet,
+    Image,
 } from "react-native";
 
 export default function HomeTab() {
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
 
-            {/* HEADER */}
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>Hello Touqeer 👋</Text>
-                <Text style={styles.headerSubtitle}>Welcome back!</Text>
-            </View>
+                <Text style={styles.headerSubtitle}>Good morning</Text>
 
-            {/* MAIN CONTENT AREA */}
-            <View style={styles.mainWrapper}>
-
-                {/* SEARCH BOX */}
                 <View style={styles.searchBox}>
                     <TextInput
-                        placeholder="Search..."
+                        placeholder="What do you want to buy?"
                         placeholderTextColor="#aaa"
                         style={styles.input}
                     />
                 </View>
 
-                {/* FEATURE CARDS */}
-                <Text style={styles.sectionTitle}>Quick Actions</Text>
+                <View style={styles.categoryRow}>
+                    {["Rings", "Bracelets", "Earrings", "Watches", "Necklace"].map(
+                        (item) => (
+                            <View key={item} style={styles.categoryItem}>
+                                <View style={styles.categoryCircle} />
+                                <Text style={styles.categoryLabel}>{item}</Text>
+                            </View>
+                        )
+                    )}
+                </View>
+            </View>
 
-                <View style={styles.featureRow}>
-                    <TouchableOpacity style={styles.featureCard}>
-                        <Text style={styles.featureText}>Profile</Text>
+            <View style={styles.mainWrapper}>
+
+                <Text style={styles.sectionTitle}>Exclusive offers for you</Text>
+
+                <View style={styles.offerCard}>
+                    <View style={{ flex: 1 }}>
+                        <Text style={styles.offerTitle}>Fresh Deals, Fresh Items!</Text>
+                        <Text style={styles.offerSubtitle}>
+                            Up to 20% off on new arrivals.
+                        </Text>
+
+                        <TouchableOpacity style={styles.shopBtn}>
+                            <Text style={styles.shopBtnText}>Shop Now</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <Image
+                        source={{ uri: "https://i.imgur.com/yzjI2T0.png" }}
+                        style={styles.offerImg}
+                    />
+                </View>
+
+                <View style={styles.topPickRow}>
+                    <Text style={styles.sectionTitle}>Top pick for you</Text>
+                    <TouchableOpacity>
+                        <Text style={styles.seeAll}>See All</Text>
                     </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.featureCard}>
-                        <Text style={styles.featureText}>Settings</Text>
-                    </TouchableOpacity>
                 </View>
 
-                {/* RECENT ACTIVITY */}
-                <Text style={styles.sectionTitle}>Recent Activity</Text>
+                <View style={styles.pickRow}>
+                    <View style={styles.pickCard}>
+                        <Image
+                            source={{ uri: "https://i.imgur.com/4ZQZ4.jpg" }}
+                            style={styles.pickImg}
+                        />
+                        <Text style={styles.pickText}>Gold plated Earring</Text>
+                    </View>
 
-                <View style={styles.activityCard}>
-                    <Text style={styles.activityTitle}>Scanned QR Code</Text>
-                    <Text style={styles.activityTime}>2 hours ago</Text>
+                    <View style={styles.pickCard}>
+                        <Image
+                            source={{ uri: "https://i.imgur.com/9tw4D.jpg" }}
+                            style={styles.pickImg}
+                        />
+                        <Text style={styles.pickText}>Silver Ring Diamond</Text>
+                    </View>
                 </View>
 
-                <View style={styles.activityCard}>
-                    <Text style={styles.activityTitle}>Checked Location</Text>
-                    <Text style={styles.activityTime}>4 hours ago</Text>
-                </View>
-
-                <View style={{ height: 40 }} />
+                <View style={{ height: 50 }} />
 
             </View>
         </ScrollView>
@@ -82,9 +110,43 @@ const styles = StyleSheet.create({
     headerSubtitle: {
         fontSize: 16,
         marginTop: 5,
-        color: "rgba(255,255,255,0.8)",
+        color: "rgba(255,255,255,0.85)",
     },
 
+    searchBox: {
+        backgroundColor: "#fff",
+        borderRadius: 16,
+        paddingHorizontal: 15,
+        paddingVertical: 12,
+        marginTop: 20,
+    },
+    input: {
+        fontSize: 16,
+        color: "#333",
+    },
+
+    categoryRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: 25,
+    },
+    categoryItem: {
+        alignItems: "center",
+    },
+    categoryCircle: {
+        width: 45,
+        height: 45,
+        borderRadius: 22,
+        backgroundColor: "rgba(255,255,255,0.7)",
+        marginBottom: 6,
+    },
+    categoryLabel: {
+        fontSize: 12,
+        color: "#fff",
+        fontWeight: "600",
+    },
+
+    /* White Container */
     mainWrapper: {
         backgroundColor: "#fff",
         borderTopLeftRadius: 30,
@@ -94,66 +156,79 @@ const styles = StyleSheet.create({
         minHeight: "100%",
     },
 
-    searchBox: {
-        backgroundColor: "#f3f4f6",
-        borderRadius: 14,
-        paddingHorizontal: 15,
-        paddingVertical: 12,
-        marginBottom: 25,
-        borderWidth: 1,
-        borderColor: "#e5e7eb",
-    },
-    input: {
-        fontSize: 16,
-        color: "#333",
-    },
-
     sectionTitle: {
         fontSize: 20,
         fontWeight: "700",
-        marginBottom: 12,
+        marginBottom: 15,
         color: "#222",
     },
 
-    featureRow: {
+    offerCard: {
+        backgroundColor: "#E4FFF4",
+        padding: 20,
+        borderRadius: 20,
         flexDirection: "row",
-        justifyContent: "space-between",
+        alignItems: "center",
         marginBottom: 25,
     },
-    featureCard: {
-        width: "48%",
-        backgroundColor: "#ffffff",
-        paddingVertical: 28,
-        borderRadius: 16,
-        alignItems: "center",
-        elevation: 4,
-        shadowColor: "#000",
-        shadowOpacity: 0.1,
-        shadowRadius: 6,
-    },
-    featureText: {
+    offerTitle: {
         fontSize: 18,
-        fontWeight: "600",
-        color: "#00A86B",
+        fontWeight: "700",
+        color: "#0F7E5D",
+    },
+    offerSubtitle: {
+        marginTop: 5,
+        fontSize: 14,
+        color: "#555",
+    },
+    shopBtn: {
+        backgroundColor: "#00A86B",
+        borderRadius: 12,
+        paddingHorizontal: 14,
+        paddingVertical: 8,
+        marginTop: 10,
+    },
+    shopBtnText: {
+        color: "#fff",
+        fontWeight: "700",
+    },
+    offerImg: {
+        width: 90,
+        height: 110,
+        resizeMode: "contain",
     },
 
-    activityCard: {
-        backgroundColor: "#ffffff",
-        padding: 18,
-        borderRadius: 16,
-        marginBottom: 15,
-        elevation: 3,
-        shadowColor: "#000",
-        shadowOpacity: 0.08,
-        shadowRadius: 5,
+    topPickRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 10,
     },
-    activityTitle: {
-        fontSize: 16,
+    seeAll: {
+        fontSize: 14,
+        color: "#00A86B",
+        fontWeight: "700",
+    },
+
+    pickRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    pickCard: {
+        width: "48%",
+        backgroundColor: "#fff",
+        borderRadius: 20,
+        padding: 12,
+        elevation: 4,
+    },
+    pickImg: {
+        width: "100%",
+        height: 120,
+        borderRadius: 14,
+        marginBottom: 10,
+    },
+    pickText: {
+        fontSize: 14,
         fontWeight: "600",
-        marginBottom: 4,
-    },
-    activityTime: {
-        fontSize: 13,
-        color: "#777",
     },
 });
