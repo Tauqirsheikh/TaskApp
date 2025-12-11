@@ -31,6 +31,7 @@ const LocationTab: React.FC = () => {
 
     useEffect(() => {
         let watchId: number | null = null;
+        console.log("Location permission status:", hasPermission, watchId);
 
         if (hasPermission) {
             watchId = Geolocation.watchPosition(
@@ -51,7 +52,7 @@ const LocationTab: React.FC = () => {
                     }
                 },
                 (error) => console.warn("Watch error:", error),
-                { enableHighAccuracy: true, distanceFilter: 10 }
+                { enableHighAccuracy: true, distanceFilter: 10 },
             );
         }
 
