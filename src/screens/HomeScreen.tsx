@@ -23,12 +23,20 @@ export default function HomeScreen({ navigation }: any) {
         }
     };
 
-    const tabs = ["Home", "Camera", "Location"];
+    const tabs = [
+        { name: "Home", icon: "home-outline", activeIcon: "home" },
+        { name: "Camera", icon: "camera-outline", activeIcon: "camera" },
+        { name: "Location", icon: "location-outline", activeIcon: "location" },
+    ];
 
     return (
         <View style={styles.container}>
+            {/* HEADER */}
             <View style={styles.header}>
-                <Text style={styles.headerTitle}>Home</Text>
+                <Text style={styles.headerTitle}>
+                    {activeTab}
+                </Text>
+
                 <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
                     <Text style={styles.logoutText}>Logout</Text>
                 </TouchableOpacity>
@@ -38,30 +46,21 @@ export default function HomeScreen({ navigation }: any) {
 
             <View style={styles.tabBar}>
                 {tabs.map((tab) => {
-                    const focused = tab === activeTab;
+                    const focused = tab.name === activeTab;
+
                     return (
                         <TouchableOpacity
-                            key={tab}
-                            onPress={() => setActiveTab(tab)}
+                            key={tab.name}
+                            onPress={() => setActiveTab(tab.name)}
                             style={[
                                 styles.tabButton,
-                                {
-                                    paddingHorizontal: focused ? 22 : 16,
-                                    paddingVertical: focused ? 10 : 6,
-                                    backgroundColor: focused ? "#FF7A00" : "#F2F2F2",
-                                    shadowColor: focused ? "#FF7A00" : "transparent",
-                                    elevation: focused ? 6 : 0,
-                                },
+                                focused && styles.activeTabButton,
                             ]}
                         >
-                            <Text
-                                style={{
-                                    fontSize: 15,
-                                    fontWeight: "700",
-                                    color: focused ? "#fff" : "#555",
-                                }}
-                            >
-                                {tab}
+                            <Text style={[styles.tabLabel, {
+                                color: focused ? "#fff" : "#555",
+                            }]}>
+                                {tab.name}
                             </Text>
                         </TouchableOpacity>
                     );
@@ -72,34 +71,74 @@ export default function HomeScreen({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1 },
+    container: { flex: 1, backgroundColor: "#F9F9F9" },
+
     header: {
-        height: 80,
-        backgroundColor: "#FF7A00",
+        height: 85,
+        backgroundColor: "#00A86B",
         paddingHorizontal: 20,
         paddingTop: 40,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        elevation: 5,
     },
-    headerTitle: { color: "white", fontSize: 22, fontWeight: "bold" },
-    logoutBtn: { padding: 8, backgroundColor: "white", borderRadius: 6 },
-    logoutText: { color: "#FF7A00", fontWeight: "600" },
+
+    headerTitle: {
+        color: "white",
+        fontSize: 22,
+        fontWeight: "bold",
+    },
+
+    logoutBtn: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 5,
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        backgroundColor: "white",
+        borderRadius: 8,
+    },
+
+    logoutText: {
+        color: "#00A86B",
+        fontWeight: "600",
+        fontSize: 15,
+    },
+
     tabBar: {
         flexDirection: "row",
         justifyContent: "space-around",
-        height: 80,
+        alignItems: "center",
+        height: 75,
         backgroundColor: "#ffffff",
         borderTopWidth: 0,
-        paddingBottom: 15,
-        paddingTop: 10,
         elevation: 10,
+        paddingBottom: 12,
+        paddingTop: 10,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        shadowColor: "#000",
+        shadowOpacity: 0.15,
+        shadowRadius: 8,
     },
+
     tabButton: {
-        borderRadius: 50,
-        justifyContent: "center",
+        paddingVertical: 10,
+        paddingHorizontal: 15,
         alignItems: "center",
-        shadowOpacity: 0.3,
-        shadowRadius: 6,
+        borderRadius: 12,
+    },
+
+    activeTabButton: {
+        backgroundColor: "#00A86B",
+        borderRadius: 20,
+        paddingHorizontal: 20,
+        elevation: 4,
+    },
+
+    tabLabel: {
+        fontSize: 13,
+        fontWeight: "600",
     },
 });
