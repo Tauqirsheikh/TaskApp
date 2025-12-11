@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 14,
         paddingVertical: 8,
         marginTop: 10,
+        width: 100,
     },
     shopBtnText: {
         color: "#fff",
