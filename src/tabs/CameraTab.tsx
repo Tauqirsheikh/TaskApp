@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image, PermissionsAndroid, Platform, Alert } from "react-native";
 import { Camera, CameraType } from "react-native-camera-kit";
 
 const CameraTab: React.FC = () => {
@@ -7,12 +7,20 @@ const CameraTab: React.FC = () => {
     const [isCameraOpen, setIsCameraOpen] = useState(false);
     const [imageUri, setImageUri] = useState<string | null>(null);
 
+    const requestCameraPermission = async () => {
+        if (Platform.OS === "android") {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA
+            );
+            return granted === PermissionsAndroid.RESULTS.GRANTED;
+        }
+        return true;
+    };
+
     const takePhoto = async () => {
         if (!cameraRef.current) return;
-
         try {
             const photo = await cameraRef.current.capture();
-            console.log("Photo Object:", photo);
 
             const uri =
                 photo?.uri ||
@@ -33,27 +41,15 @@ const CameraTab: React.FC = () => {
         }
     };
 
-
-    // const closeCamera = () => {
-    //     setIsCameraOpen(false);
-    //     setImageUri(null);
-    // };
-
     return (
         <View style={{ flex: 1, padding: 20 }}>
 
             {!isCameraOpen && (
                 <View style={styles.previewBox}>
                     {imageUri ? (
-                        <Image
-                            source={{ uri: imageUri }}
-                            style={styles.previewImage}
-                            resizeMode="cover"
-                        />
+                        <Image source={{ uri: imageUri }} style={styles.previewImage} />
                     ) : (
-                        <Text style={{ fontSize: 16, color: "#555" }}>
-                            No image captured
-                        </Text>
+                        <Text>No image captured</Text>
                     )}
                 </View>
             )}
@@ -61,7 +57,11 @@ const CameraTab: React.FC = () => {
             {!isCameraOpen && (
                 <TouchableOpacity
                     style={styles.cameraBtn}
-                    onPress={() => setIsCameraOpen(true)}
+                    onPress={async () => {
+                        const ok = await requestCameraPermission();
+                        if (ok) setIsCameraOpen(true);
+                        else Alert.alert("Camera permission denied");
+                    }}
                 >
                     <Text style={styles.btnText}>Open Camera</Text>
                 </TouchableOpacity>
@@ -83,6 +83,7 @@ const CameraTab: React.FC = () => {
         </View>
     );
 };
+
 
 const styles = StyleSheet.create({
     previewBox: {
