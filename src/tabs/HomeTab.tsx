@@ -54,7 +54,7 @@ export default function HomeTab() {
                     </View>
 
                     <Image
-                        source={{ uri: "https://i.imgur.com/yzjI2T0.png" }}
+                        source={{ uri: "https://fastly.picsum.photos/id/0/5000/3333.jpg?hmac=_j6ghY5fCfSD6tvtcV74zXivkJSPIfR9B8w34XeQmvU" }}
                         style={styles.offerImg}
                     />
                 </View>
@@ -69,15 +69,15 @@ export default function HomeTab() {
                 <View style={styles.pickRow}>
                     <View style={styles.pickCard}>
                         <Image
-                            source={{ uri: "https://i.imgur.com/4ZQZ4.jpg" }}
+                            source={{ uri: "https://fastly.picsum.photos/id/21/3008/2008.jpg?hmac=T8DSVNvP-QldCew7WD4jj_S3mWwxZPqdF0CNPksSko4" }}
                             style={styles.pickImg}
                         />
-                        <Text style={styles.pickText}>Gold plated Earring</Text>
+                        <Text style={styles.pickText}>Women's Footwear</Text>
                     </View>
 
                     <View style={styles.pickCard}>
                         <Image
-                            source={{ uri: "https://i.imgur.com/9tw4D.jpg" }}
+                            source={{ uri: "https://cdn2.thecatapi.com/images/2gq.jpg" }}
                             style={styles.pickImg}
                         />
                         <Text style={styles.pickText}>Silver Ring Diamond</Text>
@@ -146,7 +146,6 @@ const styles = StyleSheet.create({
         fontWeight: "600",
     },
 
-    /* White Container */
     mainWrapper: {
         backgroundColor: "#fff",
         borderTopLeftRadius: 30,
