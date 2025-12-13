@@ -1,11 +1,21 @@
 import React, { useRef, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image, PermissionsAndroid, Platform, Alert } from "react-native";
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    StyleSheet,
+    Image,
+    PermissionsAndroid,
+    Platform,
+    Alert,
+} from "react-native";
 import { Camera, CameraType } from "react-native-camera-kit";
 
 const CameraTab: React.FC = () => {
     const cameraRef = useRef<any>(null);
     const [isCameraOpen, setIsCameraOpen] = useState(false);
     const [imageUri, setImageUri] = useState<string | null>(null);
+    const [showActions, setShowActions] = useState(false); // 🔹 NEW
 
     const requestCameraPermission = async () => {
         if (Platform.OS === "android") {
@@ -19,6 +29,7 @@ const CameraTab: React.FC = () => {
 
     const takePhoto = async () => {
         if (!cameraRef.current) return;
+
         try {
             const photo = await cameraRef.current.capture();
 
@@ -29,21 +40,30 @@ const CameraTab: React.FC = () => {
                 photo?.path ||
                 null;
 
-            if (!uri) {
-                console.warn("No valid image URI found");
-                return;
-            }
+            if (!uri) return;
 
             setImageUri(uri.startsWith("file://") ? uri : `file://${uri}`);
             setIsCameraOpen(false);
+            setShowActions(true); // 🔹 show Retake / Done
         } catch (err) {
             console.log("Capture Error:", err);
         }
     };
 
+    const handleRetake = () => {
+        setImageUri(null);
+        setShowActions(false);
+        setIsCameraOpen(true);
+    };
+
+    const handleDone = () => {
+        setShowActions(false);
+        // imageUri remains, preview stays
+    };
+
     return (
         <View style={{ flex: 1, padding: 20 }}>
-
+            {/* Preview */}
             {!isCameraOpen && (
                 <View style={styles.previewBox}>
                     {imageUri ? (
@@ -54,7 +74,8 @@ const CameraTab: React.FC = () => {
                 </View>
             )}
 
-            {!isCameraOpen && (
+            {/* Open Camera Button */}
+            {!isCameraOpen && !showActions && (
                 <TouchableOpacity
                     style={styles.cameraBtn}
                     onPress={async () => {
@@ -67,6 +88,20 @@ const CameraTab: React.FC = () => {
                 </TouchableOpacity>
             )}
 
+            {/* Retake & Done Buttons */}
+            {!isCameraOpen && showActions && (
+                <View style={styles.actionRow}>
+                    <TouchableOpacity style={styles.retakeBtn} onPress={handleRetake}>
+                        <Text style={styles.btnText}>Retake</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.doneBtn} onPress={handleDone}>
+                        <Text style={styles.btnText}>Done</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
+
+            {/* Camera View */}
             {isCameraOpen && (
                 <View style={{ flex: 1 }}>
                     <Camera
@@ -83,7 +118,6 @@ const CameraTab: React.FC = () => {
         </View>
     );
 };
-
 
 const styles = StyleSheet.create({
     previewBox: {
@@ -117,6 +151,26 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         borderRadius: 40,
     },
+    actionRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: 10,
+    },
+    retakeBtn: {
+        backgroundColor: "#FF6B6B",
+        padding: 12,
+        borderRadius: 8,
+        flex: 1,
+        marginRight: 10,
+        alignItems: "center",
+    },
+    doneBtn: {
+        backgroundColor: "#00A86B",
+        padding: 12,
+        borderRadius: 8,
+        flex: 1,
+        alignItems: "center",
+    },
     btnText: {
         color: "white",
         fontWeight: "bold",
@@ -125,4 +179,3 @@ const styles = StyleSheet.create({
 });
 
 export default CameraTab;
-

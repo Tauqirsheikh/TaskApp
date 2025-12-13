@@ -8,7 +8,7 @@ import LocationTab from "../tabs/LocationTab";
 export default function HomeScreen({ navigation }: any) {
     const [activeTab, setActiveTab] = useState("Home");
 
-    const handleLogout = () => navigation.replace("Login");
+    // const handleLogout = () => navigation.replace("Login");
 
     const renderTabContent = () => {
         switch (activeTab) {
@@ -37,9 +37,9 @@ export default function HomeScreen({ navigation }: any) {
                     {activeTab}
                 </Text>
 
-                <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
+                {/* <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
                     <Text style={styles.logoutText}>Logout</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
 
             <View style={{ flex: 1 }}>{renderTabContent()}</View>
